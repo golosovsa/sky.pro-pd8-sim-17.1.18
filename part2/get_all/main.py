@@ -10,15 +10,16 @@
 # 3. Создать Сlass based view который позволяет
 #    с помощью GET-запроса по адресу `/books` получить
 #    список всех сущностей, определенных в cписке
+import json
 
-
-from flask import Flask
+from flask import Flask, jsonify
+from flask_restx import Api, Resource
 
 app = Flask(__name__)
 app. config['RESTX_JSON'] = {'ensure_ascii': False, 'indent': 2}
 
-api = # TODO допишите код
-book_ns = # TODO допишите код
+api = Api(app)
+book_ns = api.namespace("books")
 
 books = [
     {
@@ -37,6 +38,12 @@ books = [
 
 
 # TODO напишите Class Based View здесь
+
+@book_ns.route("/")
+class BooksView(Resource):
+
+    def get(self):
+        return books, 200
 
 
 # для проверки работоспособности запустите фаил

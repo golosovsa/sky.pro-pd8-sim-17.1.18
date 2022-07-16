@@ -48,13 +48,13 @@ Pycharm может предложить вам сделать это после 
 - [x] part1/get_instance
 
 #### Часть 2:
-- part2/get_all
-- part2/get_all_db
-- part2/get_one_and_all
-- part2/post
-- part2/post_with_db
-- part2/put_patch_delete
-- part2/put_patch_delete_with_db
+- [x] part2/get_all
+- [x] part2/get_all_db
+- [x] part2/get_one_and_all
+- [x] part2/post
+- [x] part2/post_with_db
+- [x] part2/put_patch_delete
+- [x] part2/put_patch_delete_with_db
 
 Задачи описаны в комментариях в файле main.py
 В текущих заданиях вы будете работать с Flask, а также изучите основы REST.

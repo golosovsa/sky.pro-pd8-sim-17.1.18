@@ -10,6 +10,7 @@ from flask import Flask
 from flask_restx import Api
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
+from flask_restx import Api, Resource
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -18,6 +19,8 @@ app. config['RESTX_JSON'] = {'ensure_ascii': False, 'indent': 2}
 
 db = SQLAlchemy(app)
 
+# api = Api(app)
+# books_ns = api.namespace("books")
 
 class Book(db.Model):
     __tablename__ = 'book'
@@ -51,6 +54,14 @@ with db.session.begin():
 
 
 # TODO напишите Class Based View здесь
+@book_ns.route("/")
+class BooksView(Resource):
+
+    def get(self):
+
+        schema = BookSchema(many=True)
+        data = Book.query.all()
+        return schema.dump(data), 200
 
 
 # для проверки работоспособности запустите фаил

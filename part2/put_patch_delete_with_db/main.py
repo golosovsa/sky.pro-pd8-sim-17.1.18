@@ -31,7 +31,7 @@ app. config['RESTX_JSON'] = {'ensure_ascii': False, 'indent': 2}
 db = SQLAlchemy(app)
 
 api = Api(app)
-note_ns = # TODO допишите код
+note_ns = api.namespace("notes")
 
 
 class Note(db.Model):
@@ -61,16 +61,43 @@ with db.session.begin():
 
 
 # TODO Допишите Class Based View здесь
-# @ 
-# class ...
-#     def put(self, uid):
-#         pass
+@note_ns.route("/<int:uid>")
+class NoteView(Resource):
+    def put(self, uid):
+        data = request.json
+        note: Note = Note.query.get(uid)
+        if note is None:
+            return "", 404
+        note.text = data["text"]
+        note.author = data["author"]
 
-#     def patch(self, uid):
-#         pass
+        db.session.add(note)
+        db.session.commit()
 
-#     def delete(self, uid):
-#         pass
+        return "", 204
+
+    def patch(self, uid):
+        data = request.json
+        note: Note = Note.query.get(uid)
+        if note is None:
+            return "", 404
+        if "text" in data:
+            note.text = data["text"]
+        if "author" in data:
+            note.author = data["author"]
+
+        db.session.add(note)
+        db.session.commit()
+
+        return "", 204
+
+    def delete(self, uid):
+        note: Note = Note.query.get(uid)
+        if note is None:
+            return "", 404
+        db.session.delete(note)
+        db.session.commit()
+        return "", 204
 
 
 # # # # # # # # # # # #

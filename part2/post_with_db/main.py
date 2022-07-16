@@ -6,8 +6,8 @@
 #   с помощью POST-запроса по адресу `/notes/` добавить
 #   в базу данных запись о соответствующем объекте
 
-from flask import Flask
-from flask_restx import Api
+from flask import Flask, request
+from flask_restx import Api, Resource
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
 from prettytable import prettytable
@@ -50,11 +50,20 @@ with db.session.begin():
 
 # TODO напишите Class Based View здесь
 
+@note_ns.route("/")
+class NotesView(Resource):
+    def post(self):
+        json_data = request.json
+        note = Note(**json_data)
+        with db.session.begin():
+            db.session.add(note)
+        return "", 201
+
 
 # # # # # # # # # # # #                                    # Не удаляйте этот код, он нужен для
 if __name__ == '__main__':                                 # имитации post-запроса и вывода
     client = app.test_client()                             # результата в терминал
-    response = client.post('/notes/', json='')             # TODO для самопроверки вы можете добавить
+    response = client.post('/notes/', json={"text": "Test text", "author": "Test author"})             # TODO для самопроверки вы можете добавить
     session = db.session()                                 # свой json в соответствующий аргумент
     cursor = session.execute("SELECT * FROM note").cursor  # функции post
     mytable = prettytable.from_db_cursor(cursor)

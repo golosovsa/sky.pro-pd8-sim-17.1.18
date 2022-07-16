@@ -15,6 +15,7 @@ from flask import Flask
 from flask_restx import Api
 from flask_sqlalchemy import SQLAlchemy
 from marshmallow import Schema, fields
+from flask_restx import Api, Resource
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -51,6 +52,20 @@ with db.session.begin():
 
 
 # TODO напишите Class Based Views здесь
+
+@note_ns.route("/")
+class NotesView(Resource):
+
+    def get(self):
+
+        return notes_schema.dump(Note.query.all()), 200
+
+@note_ns.route("/<int:pk>")
+class NoteView(Resource):
+
+    def get(self, pk):
+
+        return note_schema.dump(Note.query.get(pk)), 200
 
 # Для проверки работоспособности запустите фаил
 # и сделайте GET-запрос на адреса:
