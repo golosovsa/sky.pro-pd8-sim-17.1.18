@@ -10,10 +10,12 @@
 #      "author": "narod",
 #      "year": 1999
 #    }
+import datetime
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import json
+from marshmallow import Schema, fields, pprint
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -39,9 +41,11 @@ with db.session.begin():
     db.session.add(book)
 
 
-class BookSchema:
-    # TODO напишите схему здесь
-    pass
+class BookSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    author = fields.Str()
+    year = fields.Int()
 
 
 def serialize():

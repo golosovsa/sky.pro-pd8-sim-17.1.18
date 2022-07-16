@@ -40,12 +40,12 @@ Pycharm может предложить вам сделать это после 
 ### Порядок выполнения заданий
 #### Часть 1:
 
-- part1/schema_description
-- part1/serialization
-- part1/serialization_many
-- part1/create_instance
-- part1/finished_view
-- part1/get_instance
+- [x] part1/schema_description
+- [x] part1/serialization
+- [x] part1/serialization_many
+- [x] part1/create_instance
+- [x] part1/finished_view
+- [x] part1/get_instance
 
 #### Часть 2:
 - part2/get_all

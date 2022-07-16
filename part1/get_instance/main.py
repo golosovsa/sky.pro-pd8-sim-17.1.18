@@ -13,8 +13,9 @@
 #
 #
 
-from flask import Flask
+from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from marshmallow import Schema, fields
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
@@ -32,9 +33,11 @@ class Book(db.Model):
     year = db.Column(db.Integer)
 
 
-class BookSchema:
-    # TODO определите здесь схему
-    pass
+class BookSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    author = fields.Str()
+    year = fields.Int()
 
 
 b1 = Book(id=1, name="Гарри Поттер",            # Данный отрезок кода
@@ -48,7 +51,10 @@ with db.session.begin():
     db.session.add_all([b1, b2])
 
 # TODO напишите роут здесь
-# @app.route(...)
+@app.route("/books/<int:pk>")
+def index(pk):
+
+    return jsonify(BookSchema().dump(Book.query.get(pk))), 200
 
 if __name__ == '__main__':
     app.run(debug=True)

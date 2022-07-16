@@ -9,7 +9,7 @@
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from marshmallow import Schema
+from marshmallow import Schema, fields
 import json
 
 app = Flask(__name__)
@@ -34,13 +34,12 @@ with db.session.begin():
 
 
 class RoleSchema(Schema):
-    # TODO напишите схему здесь
-    pass
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
 
 
 def serialize():
-    # TODO реализуйте сериализацию здесь
-    pass
+    return RoleSchema().dump(Role.query.get(1))
 
 
 if __name__ == "__main__":
